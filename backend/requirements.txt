@@ -1,0 +1,14 @@
+fastapi>=0.110,<1
+uvicorn[standard]>=0.27
+pydantic[email]>=2.6,<3
+pydantic-settings>=2.2
+python-dotenv>=1.0
+httpx>=0.27
+# --- db_client layer (required for DataikuDatabaseClient and SnowflakeClient) ---
+pandas>=2.0
+# snowflake-connector-python>=3.0  # uncomment for SnowflakeClient (direct connection)
+# cryptography>=41.0               # uncomment with snowflake-connector-python (private-key auth)
+# --- dev / test ---
+pytest>=8
+pytest-asyncio>=0.23
+ruff>=0.3

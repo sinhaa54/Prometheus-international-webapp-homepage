@@ -1,0 +1,56 @@
+{
+  "source_refreshed_at": "2026-09-15T06:00:00Z",
+  "platforms": [
+    { "name": "T&C Global", "label": "T&C Global", "accent": "#0033A0", "blurb": "Global tender and contract intelligence" },
+    { "name": "ELVIS Solutions", "label": "ELVIS Solutions", "accent": "#0093D0", "blurb": "The ELVIS suite for commercial, supply, and pricing" },
+    { "name": "Market Dashboards", "label": "Market Dashboards", "accent": "#00AEEF", "blurb": "Country-level views across global markets" }
+  ],
+  "category_accent": "#3B9EDE",
+  "category_order": ["Commercial", "Pricing", "Regulatory & Others", "Demand & Supply", "Custom"],
+  "access_catalog": [
+    {
+      "name": "T&C Enterprise",
+      "platform": "T&C Global",
+      "category": "Commercial",
+      "icon_key": "chart",
+      "request_url": "https://urldefense.com/v3/__https://forms.office.com/r/tc-enterprise-access__;!!H9nueQsQ!7jrYacdyITfZT9tF-SC_AmuAGnlhlRJG1WufBVZxkkuDCXiEO3TM2IkbafmLCfXDn66e8PHeyHduLxSTMWPAug$"
+    },
+    {
+      "name": "ELVIS Market Dashboard",
+      "platform": "ELVIS Solutions",
+      "category": "Commercial",
+      "icon_key": "chart",
+      "request_url": "https://urldefense.com/v3/__https://forms.office.com/r/elvis-market-access__;!!H9nueQsQ!7jrYacdyITfZT9tF-SC_AmuAGnlhlRJG1WufBVZxkkuDCXiEO3TM2IkbafmLCfXDn66e8PHeyHduLxTrF9pivg$"
+    },
+    {
+      "name": "Other Dashboards",
+      "platform": "Multiple",
+      "category": null,
+      "icon_key": "grid",
+      "meta": "Includes PGS Dashboard, T&C Regulatory and Market Dashboards",
+      "request_url": "https://urldefense.com/v3/__https://forms.office.com/r/other-dashboards-access__;!!H9nueQsQ!7jrYacdyITfZT9tF-SC_AmuAGnlhlRJG1WufBVZxkkuDCXiEO3TM2IkbafmLCfXDn66e8PHeyHduLxR5poVNvA$"
+    }
+  ],
+  "dashboards": [
+    {"dashboard_id":"TCG-ENT-001","dashboard_name":"T&C Enterprise","dashboard_description":"Enterprise tenders & contracts overview.","tableau_url":"https://tableau.pfizer.com/views/TCEnterprise/Overview","platform":"T&C Global","category":"Commercial","subcategory":"T&C Enterprise","market":"Global","country_code":null,"display_order":10,"is_active":true,"owner_name":"Christoph Meyer","owner_email":"christoph.meyer@pfizer.com","tags":["tenders","contracts","enterprise"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"TCG-PGS-002","dashboard_name":"PGS Dashboard","dashboard_description":"Global supply planning overview.","tableau_url":"https://tableau.pfizer.com/views/PGS/Overview","platform":"T&C Global","category":"Demand & Supply","subcategory":"PGS","market":"Global","country_code":null,"display_order":20,"is_active":true,"owner_name":"Priya Nair","owner_email":"priya.nair@pfizer.com","tags":["supply","planning"],"last_updated_at":"2026-09-12T09:00:00Z"},
+    {"dashboard_id":"TCG-REG-003","dashboard_name":"T&C Regulatory","dashboard_description":"Regulatory monitoring & compliance.","tableau_url":"https://tableau.pfizer.com/views/TCRegulatory/Overview","platform":"T&C Global","category":"Regulatory & Others","subcategory":"T&C Regulatory","market":"Global","country_code":null,"display_order":30,"is_active":true,"owner_name":"Daniel Roth","owner_email":"daniel.roth@pfizer.com","tags":["regulatory","compliance"],"last_updated_at":"2026-09-11T09:00:00Z"},
+
+    {"dashboard_id":"ELV-COM-101","dashboard_name":"Market Communication Dashboard","dashboard_description":"Market communication overview.","tableau_url":"https://tableau.pfizer.com/views/ELVISMarket/Overview","platform":"ELVIS Solutions","category":"Commercial","subcategory":"Market Communication","market":"Global","country_code":null,"display_order":10,"is_active":true,"owner_name":"Sofia Almeida","owner_email":"sofia.almeida@pfizer.com","tags":["commercial","market","communication"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"ELV-COM-102","dashboard_name":"Allocation Reporting Dashboard","dashboard_description":"Stock allocation & fulfilment reporting.","tableau_url":"https://tableau.pfizer.com/views/ELVISAllocation/Overview","platform":"ELVIS Solutions","category":"Commercial","subcategory":"Allocation","market":"Global","country_code":null,"display_order":20,"is_active":true,"owner_name":"Marcus Lee","owner_email":"marcus.lee@pfizer.com","tags":["allocation","fulfilment"],"last_updated_at":"2026-09-10T09:00:00Z"},
+    {"dashboard_id":"ELV-COM-103","dashboard_name":"Global Performance Dashboard","dashboard_description":"Worldwide commercial performance.","tableau_url":"https://tableau.pfizer.com/views/ELVISGlobalPerf/Overview","platform":"ELVIS Solutions","category":"Commercial","subcategory":"Global Performance","market":"Global","country_code":null,"display_order":30,"is_active":true,"owner_name":"Elena Petrova","owner_email":"elena.petrova@pfizer.com","tags":["performance"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"ELV-DSA-104","dashboard_name":"DSA Tool Dashboard","dashboard_description":"Demand & supply analysis.","tableau_url":"https://tableau.pfizer.com/views/ELVISDSA/Overview","platform":"ELVIS Solutions","category":"Demand & Supply","subcategory":"DSA","market":"Global","country_code":null,"display_order":40,"is_active":true,"owner_name":"Rahul Verma","owner_email":"rahul.verma@pfizer.com","tags":["demand","supply"],"last_updated_at":"2026-09-08T09:00:00Z"},
+    {"dashboard_id":"ELV-PRC-105","dashboard_name":"ELVIS 2.0 Price Approval Tool Dashboard","dashboard_description":"Price approval workflow.","tableau_url":"https://tableau.pfizer.com/views/ELVISPricing/Overview","platform":"ELVIS Solutions","category":"Pricing","subcategory":"Price Approval","market":"Global","country_code":null,"display_order":50,"is_active":true,"owner_name":"Anna Kowalski","owner_email":"anna.kowalski@pfizer.com","tags":["pricing","approval"],"last_updated_at":"2026-09-12T09:00:00Z"},
+
+    {"dashboard_id":"MD-AUS-202","dashboard_name":"Australia Price Engine","dashboard_description":"Australian pricing scenarios & models.","tableau_url":"https://tableau.pfizer.com/views/AUSPrice/Overview","platform":"Market Dashboards","category":"Pricing","subcategory":"Price Engine","market":"Australia","country_code":"AU","display_order":10,"is_active":true,"owner_name":"James Carter","owner_email":"james.carter@pfizer.com","tags":["pricing","aus"],"last_updated_at":"2026-09-14T09:00:00Z"},
+    {"dashboard_id":"MD-BRA-210","dashboard_name":"Brazil Commercial Offers Tracking","dashboard_description":"Commercial offers & bids tracking.","tableau_url":"https://tableau.pfizer.com/views/BRAOffers/Overview","platform":"Market Dashboards","category":"Custom","subcategory":"Commercial Offers","market":"Brazil","country_code":"BR","display_order":20,"is_active":true,"owner_name":"Lucas Oliveira","owner_email":"lucas.oliveira@pfizer.com","tags":["offers","bra"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"MD-EGY-203","dashboard_name":"Egypt Price Perspective","dashboard_description":"Egypt pricing benchmarks & trends.","tableau_url":"https://tableau.pfizer.com/views/EGYPrice/Overview","platform":"Market Dashboards","category":"Pricing","subcategory":"Price Perspective","market":"Egypt","country_code":"EG","display_order":30,"is_active":true,"owner_name":"Nadia Hassan","owner_email":"nadia.hassan@pfizer.com","tags":["pricing","egy"],"last_updated_at":"2026-09-12T09:00:00Z"},
+    {"dashboard_id":"MD-FRA-205","dashboard_name":"France Contract Performance Dashboard","dashboard_description":"French contract performance tracking.","tableau_url":"https://tableau.pfizer.com/views/FRAContracts/Overview","platform":"Market Dashboards","category":"Pricing","subcategory":"Contract Performance","market":"France","country_code":"FR","display_order":40,"is_active":true,"owner_name":"Camille Dubois","owner_email":"camille.dubois@pfizer.com","tags":["contracts","fra"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"MD-DEU-209","dashboard_name":"Germany Cam Performance Tracker","dashboard_description":"CAM channel performance tracking.","tableau_url":"https://tableau.pfizer.com/views/DEUCAM/Overview","platform":"Market Dashboards","category":"Custom","subcategory":"CAM","market":"Germany","country_code":"DE","display_order":50,"is_active":true,"owner_name":"Lukas Weber","owner_email":"lukas.weber@pfizer.com","tags":["cam","deu"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"MD-DEU-208","dashboard_name":"Germany Hospital Contracting","dashboard_description":"Hospital tenders & contracts tracking.","tableau_url":"https://tableau.pfizer.com/views/DEUHospital/Overview","platform":"Market Dashboards","category":"Custom","subcategory":"Hospital Contracting","market":"Germany","country_code":"DE","display_order":60,"is_active":true,"owner_name":"Hannah Fischer","owner_email":"hannah.fischer@pfizer.com","tags":["hospital","deu"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"MD-DEU-204","dashboard_name":"Germany Price Perspective","dashboard_description":"German pricing benchmarks & trends.","tableau_url":"https://tableau.pfizer.com/views/DEUPrice/Overview","platform":"Market Dashboards","category":"Pricing","subcategory":"Price Perspective","market":"Germany","country_code":"DE","display_order":70,"is_active":true,"owner_name":"Maximilian Braun","owner_email":"max.braun@pfizer.com","tags":["pricing","deu"],"last_updated_at":"2026-09-13T09:00:00Z"},
+    {"dashboard_id":"MD-KSA-207","dashboard_name":"KSA Competitive OOS","dashboard_description":"Competitor out-of-stock monitoring.","tableau_url":"https://tableau.pfizer.com/views/KSAOOS/Overview","platform":"Market Dashboards","category":"Demand & Supply","subcategory":"Competitive OOS","market":"Saudi Arabia","country_code":"SA","display_order":80,"is_active":true,"owner_name":"Omar Al-Farsi","owner_email":"omar.alfarsi@pfizer.com","tags":["oos","ksa"],"last_updated_at":"2026-09-11T09:00:00Z"},
+    {"dashboard_id":"MD-KSA-201","dashboard_name":"KSA Price Perspective","dashboard_description":"Saudi pricing benchmarks & trends.","tableau_url":"https://tableau.pfizer.com/views/KSAPrice/Overview","platform":"Market Dashboards","category":"Pricing","subcategory":"Price Perspective","market":"Saudi Arabia","country_code":"SA","display_order":90,"is_active":true,"owner_name":"Fatima Al-Saud","owner_email":"fatima.alsaud@pfizer.com","tags":["pricing","ksa"],"last_updated_at":"2026-09-14T09:00:00Z"},
+    {"dashboard_id":"MD-KSA-206","dashboard_name":"KSA Supply Perspective","dashboard_description":"Saudi supply & availability overview.","tableau_url":"https://tableau.pfizer.com/views/KSASupply/Overview","platform":"Market Dashboards","category":"Demand & Supply","subcategory":"Supply Perspective","market":"Saudi Arabia","country_code":"SA","display_order":100,"is_active":true,"owner_name":"Yusuf Khan","owner_email":"yusuf.khan@pfizer.com","tags":["supply","ksa"],"last_updated_at":"2026-09-14T09:00:00Z"}
+  ]
+}
