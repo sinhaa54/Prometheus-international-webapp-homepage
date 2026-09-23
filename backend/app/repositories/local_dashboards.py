@@ -67,6 +67,14 @@ class LocalDashboardRepository(DashboardRepository):
                 _log.warning("Skipping malformed access_catalog row: %s", exc)
         return items
 
+    def contact_mailto(self) -> str | None:
+        raw = self._read_payload_scalar("contact_mailto")
+        return str(raw) if raw else None
+
+    def feedback_url(self) -> str | None:
+        raw = self._read_payload_scalar("feedback_url")
+        return str(raw) if raw else None
+
     def _read_payload_field(self, key: str) -> list:
         if not self._path.exists():
             return []
@@ -75,6 +83,15 @@ class LocalDashboardRepository(DashboardRepository):
             return list(payload.get(key) or [])
         except Exception:
             return []
+
+    def _read_payload_scalar(self, key: str):
+        if not self._path.exists():
+            return None
+        try:
+            payload = json.loads(self._path.read_text(encoding="utf-8"))
+            return payload.get(key)
+        except Exception:
+            return None
 
 
 def _parse_datetime(v: str) -> datetime | None:

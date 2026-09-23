@@ -208,7 +208,7 @@ export default function App() {
         open={openAccess}
         onClose={() => setOpenAccess(false)}
         items={accessCatalog?.items ?? []}
-        allowedHosts={['forms.office.com', 'urldefense.com']}
+        allowedHosts={['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com']}
         onError={(m) => show(m, 'error')}
       />
 

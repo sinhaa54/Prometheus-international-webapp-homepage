@@ -121,6 +121,19 @@ class DashboardService:
         active = [d for d in items if d.is_active and is_valid_tableau_url(str(d.tableau_url))]
         platforms = {d.platform for d in active if d.platform}
         markets = {d.market for d in active if d.market}
+
+        # Prefer data-driven contact/feedback from the local JSON when available;
+        # fall back to the Settings defaults (env / .env).
+        contact_mailto = settings.contact_mailto
+        feedback_url = settings.feedback_url
+        if isinstance(self._repo, LocalDashboardRepository):
+            local_contact = self._repo.contact_mailto()
+            local_feedback = self._repo.feedback_url()
+            if local_contact:
+                contact_mailto = local_contact
+            if local_feedback:
+                feedback_url = local_feedback
+
         return MetadataResponse(
             active_dashboard_count=len(active),
             platform_count=len(platforms),
@@ -131,8 +144,8 @@ class DashboardService:
             tableau_open_in_new_tab=settings.tableau_open_in_new_tab,
             category_accent=settings.category_accent,
             category_order=self._category_order(active),
-            contact_mailto=settings.contact_mailto,
-            feedback_url=settings.feedback_url,
+            contact_mailto=contact_mailto,
+            feedback_url=feedback_url,
         )
 
     def access_catalog(self) -> AccessCatalogResponse:

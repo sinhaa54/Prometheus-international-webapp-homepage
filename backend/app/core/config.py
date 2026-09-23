@@ -38,14 +38,14 @@ class Settings(BaseSettings):
     max_page_size: int = 500
 
     # ---- Tableau ----
-    allowed_tableau_hosts: str = "tableau.pfizer.com"
+    allowed_tableau_hosts: str = "tableau.pfizer.com,eu-west-1a.online.tableau.com,us-east-1.online.tableau.com"
     tableau_open_in_new_tab: bool = True
 
     # ---- Access-request catalog ----
     # Hosts allowed for external access-request URLs (Office Forms wrapped by
     # Pfizer's urldefense.com link protection). Any catalog entry whose URL
     # does not resolve to one of these hosts is dropped by the service.
-    allowed_access_request_hosts: str = "forms.office.com,urldefense.com"
+    allowed_access_request_hosts: str = "forms.office.com,urldefense.com,forms.cloud.microsoft,rm.pfizer.com"
 
     # Uniform accent color used for the category chip strip in the UI.
     category_accent: str = "#3B9EDE"
@@ -54,8 +54,8 @@ class Settings(BaseSettings):
     # "Contact us" is a mailto link; "Feedback" is an external Office Forms
     # URL. The frontend header opens these directly - no backend submission
     # is involved for either action anymore.
-    contact_mailto: str = "mailto:analytics@pfizer.com?subject=Prometheus%20%E2%80%94%20Analytics%20query"
-    feedback_url: str = ""
+    contact_mailto: str = "mailto:DL-Prometheus_International_Operations@pfizer.com?subject=Prometheus%20%E2%80%94%20Analytics%20query"
+    feedback_url: str = "https://forms.cloud.microsoft/r/EBBNExBV23"
 
     # ---- Dataiku base path ----
     dataiku_base_path: str = "/"
