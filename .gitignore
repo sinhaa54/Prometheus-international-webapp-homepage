@@ -27,7 +27,6 @@ build/
 
 # Node / Frontend
 node_modules/
-frontend/dist/
 frontend/coverage/
 .vite/
 *.log
