@@ -1,9 +1,9 @@
 {
   "source_refreshed_at": "2026-09-23T06:00:00Z",
   "platforms": [
-    { "name": "T&C Global", "label": "T&C Global", "accent": "#0033A0", "blurb": "Global tender and contract intelligence" },
     { "name": "ELVIS", "label": "ELVIS", "accent": "#0093D0", "blurb": "The ELVIS suite for commercial, supply, and pricing" },
-    { "name": "Market", "label": "Market Specific Solutions", "accent": "#00AEEF", "blurb": "Country-level views across global markets" },
+    { "name": "T&C Global", "label": "T&C Global", "accent": "#0033A0", "blurb": "Global tender and contract intelligence" },
+    { "name": "Market", "label": "Market", "accent": "#00AEEF", "blurb": "Country-level views across global markets" },
     { "name": "Internal", "label": "Internal", "accent": "#6C757D", "blurb": "Internal usage tracking and operations" }
   ],
   "category_accent": "#3B9EDE",

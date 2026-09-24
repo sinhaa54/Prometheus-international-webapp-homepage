@@ -236,9 +236,8 @@ main { max-width: 1364px; margin: 0 auto; padding: 30px clamp(18px, 4vw, 56px) 1
   color: color-mix(in srgb, var(--accent) 78%, #000);
 }
 .fav {
-  position: absolute; top: 10px; right: 9px; width: 38px; height: 38px;
+  position: absolute; top: 10px; right: 9px; width: 30px; height: 30px;
   border-radius: 8px; display: grid; place-items: center; color: var(--muted-2);
-  font-size: 22px;
   transition: background .15s, color .15s, transform .15s;
 }
 .fav:hover { background: color-mix(in srgb, var(--accent) 10%, #fff); color: var(--accent); transform: scale(1.08); }
