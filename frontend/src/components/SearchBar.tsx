@@ -64,9 +64,7 @@ export function SearchBar({ value, onChange, suggestions, onSelect, loading, onC
       />
       {value ? (
         <button className="search__clear" aria-label="Clear search" onClick={() => { onClear(); inputRef.current?.focus(); }}>×</button>
-      ) : (
-        <span className="search__kbd" aria-hidden>Ctrl / ⌘ K</span>
-      )}
+      ) : null}
       {open && (
         <div className="suggest" id="search-suggestions" role="listbox">
           {loading && <div className="sug" role="option" aria-selected={false}>Searching…</div>}
