@@ -1,10 +1,11 @@
 /**
  * "Get access to a dashboard" modal.
  *
- * Two-pane hierarchical layout: the left pane always lists the platforms
- * (ELVIS / T&C Global / Market Specific Solutions) and stays visible; the
- * right pane shows the dashboards for whichever platform is selected.
- * Selecting a dashboard opens its access-request URL directly in a new tab.
+ * Two-step hierarchical layout: initially the three platform tiles
+ * (ELVIS / T&C Global / Market Specific Solutions) occupy the full width.
+ * Selecting one shifts the platform list into a narrow left rail and opens
+ * a right pane listing that platform's dashboards. Selecting a dashboard
+ * opens its access-request URL directly in a new tab.
  *
  * Each row links out to an external Office Forms / rm.pfizer.com URL that
  * has been server-side allowlisted (see backend `ALLOWED_ACCESS_REQUEST_HOSTS`).
@@ -55,7 +56,9 @@ export function AccessRequestModal({ open, onClose, items, allowedHosts, onError
       onClose={onClose}
       title="Get access to a dashboard"
       eyebrow="Request access"
-      description="Choose a platform, then select a dashboard to open its request form."
+      description={activePlatform === null
+        ? 'Choose a platform to see the dashboards available for self-service access.'
+        : 'Select a dashboard to open its request form.'}
       className="modal--wide"
     >
       <div className="modal__body">
@@ -64,6 +67,22 @@ export function AccessRequestModal({ open, onClose, items, allowedHosts, onError
             <InfoIcon />
             <span>No self-service access dashboards are available right now.</span>
           </p>
+        ) : activePlatform === null ? (
+          <ul className="access-tiles" aria-label="Dashboard platforms">
+            {platforms.map((p) => (
+              <li key={p}>
+                <button type="button" className="access-tile" onClick={() => setActivePlatform(p)}>
+                  <span className="access-tile__ic" aria-hidden="true">
+                    <ItemIcon iconKey={safeItems.find((it) => it.platform === p)?.icon_key ?? ''} />
+                  </span>
+                  <span className="access-tile__name">{PLATFORM_LABELS[p] ?? p}</span>
+                  <span className="access-tile__count">
+                    {safeItems.filter((it) => it.platform === p).length} dashboards
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
         ) : (
           <div className="access-columns">
             <ul className="access-platforms" aria-label="Dashboard platforms">
@@ -85,37 +104,30 @@ export function AccessRequestModal({ open, onClose, items, allowedHosts, onError
             </ul>
 
             <div className="access-detail">
-              {activePlatform === null ? (
-                <p className="access-note" role="status">
-                  <InfoIcon />
-                  <span>Select a platform on the left to see its dashboards.</span>
-                </p>
-              ) : (
-                <ul className="access-list" aria-label={`Dashboards in ${PLATFORM_LABELS[activePlatform] ?? activePlatform}`}>
-                  {dashboardsInPlatform.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        className="access-item"
-                        href={item.request_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={onClick(item)}
-                      >
-                        <span className="access-item__ic" aria-hidden="true">
-                          <ItemIcon iconKey={item.icon_key} />
-                        </span>
-                        <span className="access-item__txt">
-                          <span className="access-item__name">{item.name}</span>
-                          <span className="access-item__meta">{subline(item)}</span>
-                        </span>
-                        <span className="access-item__arrow" aria-hidden="true">
-                          <ArrowUpRightIcon />
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ul className="access-list" aria-label={`Dashboards in ${PLATFORM_LABELS[activePlatform] ?? activePlatform}`}>
+                {dashboardsInPlatform.map((item) => (
+                  <li key={item.name}>
+                    <a
+                      className="access-item"
+                      href={item.request_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={onClick(item)}
+                    >
+                      <span className="access-item__ic" aria-hidden="true">
+                        <ItemIcon iconKey={item.icon_key} />
+                      </span>
+                      <span className="access-item__txt">
+                        <span className="access-item__name">{item.name}</span>
+                        <span className="access-item__meta">{subline(item)}</span>
+                      </span>
+                      <span className="access-item__arrow" aria-hidden="true">
+                        <ArrowUpRightIcon />
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         )}

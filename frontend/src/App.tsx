@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { EmptyState } from './components/EmptyState';
-import { FilterBar, type FilterState } from './components/FilterBar';
 import { LoadingSkeletonGrid } from './components/LoadingSkeleton';
 import { PinnedPanel } from './components/PinnedPanel';
 import { PlatformSection } from './components/PlatformSection';
@@ -17,7 +16,6 @@ import { openTableauDashboard } from './services/tableau';
 import type { AccessCatalogItem, AccessCatalogResponse, Dashboard, PlatformInfo } from './types/api';
 import { homepageGreeting } from './utils/greeting';
 
-const INITIAL_FILTERS: FilterState = { platform: null, category: null, market: null, pinnedOnly: false };
 const ALLOWED_ACCESS_REQUEST_HOSTS = ['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com'];
 
 /** Best-effort match of a dashboard to a curated access-catalog entry: exact
@@ -33,20 +31,16 @@ function findAccessCatalogItem(dashboard: Dashboard, items: AccessCatalogItem[])
 export default function App() {
   // ---- data ----
   const { data: metadata } = useMetadata();
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [searchInput, setSearchInput] = useState('');
   const search = useDebouncedValue(searchInput, 220);
 
   const params = useMemo(() => ({
     search: search || undefined,
-    platform: filters.platform ?? undefined,
-    category: filters.category ?? undefined,
-    market: filters.market ?? undefined,
     page: 1,
     page_size: 500,
     sort_by: 'display_order' as const,
     sort_direction: 'asc' as const,
-  }), [search, filters.platform, filters.category, filters.market]);
+  }), [search]);
 
   const { data, loading, error } = useDashboards(params);
 
@@ -96,10 +90,6 @@ export default function App() {
   const items = data?.items ?? [];
   const platforms: PlatformInfo[] = data?.available_filters.platforms ?? [];
 
-  const visibleItems = filters.pinnedOnly
-    ? items.filter((d) => pinnedIds.includes(d.dashboard_id))
-    : items;
-
   // Sections to hide entirely from the homepage.
   const HIDDEN_PLATFORMS = new Set(['Internal']);
   // Sections to always show first, in this order.
@@ -108,7 +98,7 @@ export default function App() {
   // Preserve platform display order (from metadata), then dashboard display_order.
   const grouped = useMemo(() => {
     const byName = new Map<string, Dashboard[]>();
-    for (const d of visibleItems) {
+    for (const d of items) {
       const list = byName.get(d.platform) ?? [];
       list.push(d);
       byName.set(d.platform, list);
@@ -127,24 +117,13 @@ export default function App() {
       .filter((p) => !HIDDEN_PLATFORMS.has(p.name))
       .map((p) => ({ platform: p, dashboards: byName.get(p.name) ?? [] }))
       .filter((g) => g.dashboards.length > 0);
-  }, [visibleItems, platforms]);
+  }, [items, platforms]);
 
   const pinnedDashboards = useMemo(
     () => items.filter((d) => pinnedIds.includes(d.dashboard_id)),
     [items, pinnedIds],
   );
 
-  // Filter bar should not offer the hidden platforms (or their categories) either.
-  const visibleAvailableFilters = useMemo(() => {
-    if (!data?.available_filters) return undefined;
-    return {
-      ...data.available_filters,
-      platforms: data.available_filters.platforms.filter((p) => !HIDDEN_PLATFORMS.has(p.name)),
-      categories: data.available_filters.categories.filter((c) => !HIDDEN_PLATFORMS.has(c.value)),
-    };
-  }, [data?.available_filters]);
-
-  const resetFilters = () => { setFilters(INITIAL_FILTERS); setSearchInput(''); };
   const greeting = homepageGreeting();
 
   // ---- access-request catalog (loaded once) ----
@@ -198,22 +177,12 @@ export default function App() {
       />
 
       <main id="main-content">
-        <FilterBar
-          available={visibleAvailableFilters}
-          value={filters}
-          onChange={setFilters}
-          categoryAccent={metadata?.category_accent}
-          categoryOrder={metadata?.category_order}
-        />
-
-        {(filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (
+        {search && (
           <div className="search-banner" role="status">
             <span>
-              {search ? <>Filtering by <strong>&ldquo;{search}&rdquo;</strong> · </> : null}
-              {filters.pinnedOnly ? <>Pinned only · </> : null}
-              {data?.total ?? 0} matching dashboards.
+              Filtering by <strong>&ldquo;{search}&rdquo;</strong> · {data?.total ?? 0} matching dashboards.
             </span>
-            <button type="button" className="fchip" onClick={resetFilters}>Reset filters</button>
+            <button type="button" className="fchip" onClick={() => setSearchInput('')}>Reset search</button>
           </div>
         )}
 
@@ -228,11 +197,11 @@ export default function App() {
         {!loading && !error && grouped.length === 0 && (
           <EmptyState
             title="No dashboards to show"
-            message={search || filters.platform || filters.category || filters.market || filters.pinnedOnly
-              ? 'Try a different search or clear your filters.'
+            message={search
+              ? 'Try a different search term.'
               : 'The catalogue is empty. Add rows to the source dataset to get started.'}
-            actionLabel={search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined}
-            onAction={resetFilters}
+            actionLabel={search ? 'Reset search' : undefined}
+            onAction={() => setSearchInput('')}
           />
         )}
 
