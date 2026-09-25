@@ -77,6 +77,10 @@ export default function App() {
     const visibleItems = filters.pinnedOnly
         ? items.filter((d) => pinnedIds.includes(d.dashboard_id))
         : items;
+    // Sections to hide entirely from the homepage.
+    const HIDDEN_PLATFORMS = new Set(['Internal']);
+    // Sections to always show first, in this order.
+    const PLATFORM_PRIORITY = ['T&C Global'];
     // Preserve platform display order (from metadata), then dashboard display_order.
     const grouped = useMemo(() => {
         const byName = new Map();
@@ -88,11 +92,32 @@ export default function App() {
         // Sort each bucket by display_order (repository already sorts, but keep stable).
         for (const list of byName.values())
             list.sort((a, b) => a.display_order - b.display_order);
-        return platforms
+        const orderedPlatforms = [...platforms].sort((a, b) => {
+            const ai = PLATFORM_PRIORITY.indexOf(a.name);
+            const bi = PLATFORM_PRIORITY.indexOf(b.name);
+            if (ai === -1 && bi === -1)
+                return 0;
+            if (ai === -1)
+                return 1;
+            if (bi === -1)
+                return -1;
+            return ai - bi;
+        });
+        return orderedPlatforms
+            .filter((p) => !HIDDEN_PLATFORMS.has(p.name))
             .map((p) => ({ platform: p, dashboards: byName.get(p.name) ?? [] }))
             .filter((g) => g.dashboards.length > 0);
     }, [visibleItems, platforms]);
     const pinnedDashboards = useMemo(() => items.filter((d) => pinnedIds.includes(d.dashboard_id)), [items, pinnedIds]);
+    // Filter bar should not offer the hidden platforms either.
+    const visibleAvailableFilters = useMemo(() => {
+        if (!data?.available_filters)
+            return undefined;
+        return {
+            ...data.available_filters,
+            platforms: data.available_filters.platforms.filter((p) => !HIDDEN_PLATFORMS.has(p.name)),
+        };
+    }, [data?.available_filters]);
     const resetFilters = () => { setFilters(INITIAL_FILTERS); setSearchInput(''); };
     const greeting = homepageGreeting();
     // ---- access-request catalog (loaded once) ----
@@ -104,7 +129,7 @@ export default function App() {
             .catch(() => { });
         return () => ctrl.abort();
     }, []);
-    return (_jsxs(ErrorBoundary, { children: [_jsx(Header, { onOpenAccess: () => setOpenAccess(true), contactMailto: metadata?.contact_mailto ?? 'mailto:analytics@pfizer.com', feedbackUrl: metadata?.feedback_url ?? '', greeting: greeting, searchSlot: _jsx(SearchBar, { value: searchInput, onChange: setSearchInput, suggestions: sugData?.items ?? [], loading: sugLoading, onSelect: (d) => { setSearchInput(''); onOpenDashboard(d); }, onClear: () => setSearchInput('') }), pinnedSlot: _jsx(PinnedPanel, { pinned: pinnedDashboards, onOpen: onOpenDashboard, onUnpin: (d) => toggle(d.dashboard_id), onViewAll: () => setFilters({ ...INITIAL_FILTERS, pinnedOnly: true }) }) }), _jsxs("main", { id: "main-content", children: [_jsx(FilterBar, { available: data?.available_filters, value: filters, onChange: setFilters, pinnedCount: pinnedDashboards.length, categoryAccent: metadata?.category_accent, categoryOrder: metadata?.category_order }), (filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (_jsxs("div", { className: "search-banner", role: "status", children: [_jsxs("span", { children: [search ? _jsxs(_Fragment, { children: ["Filtering by ", _jsxs("strong", { children: ["\u201C", search, "\u201D"] }), " \u00B7 "] }) : null, filters.pinnedOnly ? _jsx(_Fragment, { children: "Pinned only \u00B7 " }) : null, data?.total ?? 0, " matching dashboards."] }), _jsx("button", { type: "button", className: "fchip", onClick: resetFilters, children: "Reset filters" })] })), error && (_jsxs("div", { className: "error-banner", role: "alert", children: ["Could not load dashboards: ", error] })), loading && _jsx(LoadingSkeletonGrid, {}), !loading && !error && grouped.length === 0 && (_jsx(EmptyState, { title: "No dashboards to show", message: search || filters.platform || filters.category || filters.market || filters.pinnedOnly
+    return (_jsxs(ErrorBoundary, { children: [_jsx(Header, { onOpenAccess: () => setOpenAccess(true), contactMailto: metadata?.contact_mailto ?? 'mailto:analytics@pfizer.com', feedbackUrl: metadata?.feedback_url ?? '', greeting: greeting, searchSlot: _jsx(SearchBar, { value: searchInput, onChange: setSearchInput, suggestions: sugData?.items ?? [], loading: sugLoading, onSelect: (d) => { setSearchInput(''); onOpenDashboard(d); }, onClear: () => setSearchInput('') }), pinnedSlot: _jsx(PinnedPanel, { pinned: pinnedDashboards, onOpen: onOpenDashboard, onUnpin: (d) => toggle(d.dashboard_id), onViewAll: () => setFilters({ ...INITIAL_FILTERS, pinnedOnly: true }) }) }), _jsxs("main", { id: "main-content", children: [_jsx(FilterBar, { available: visibleAvailableFilters, value: filters, onChange: setFilters, categoryAccent: metadata?.category_accent, categoryOrder: metadata?.category_order }), (filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (_jsxs("div", { className: "search-banner", role: "status", children: [_jsxs("span", { children: [search ? _jsxs(_Fragment, { children: ["Filtering by ", _jsxs("strong", { children: ["\u201C", search, "\u201D"] }), " \u00B7 "] }) : null, filters.pinnedOnly ? _jsx(_Fragment, { children: "Pinned only \u00B7 " }) : null, data?.total ?? 0, " matching dashboards."] }), _jsx("button", { type: "button", className: "fchip", onClick: resetFilters, children: "Reset filters" })] })), error && (_jsxs("div", { className: "error-banner", role: "alert", children: ["Could not load dashboards: ", error] })), loading && _jsx(LoadingSkeletonGrid, {}), !loading && !error && grouped.length === 0 && (_jsx(EmptyState, { title: "No dashboards to show", message: search || filters.platform || filters.category || filters.market || filters.pinnedOnly
                             ? 'Try a different search or clear your filters.'
                             : 'The catalogue is empty. Add rows to the source dataset to get started.', actionLabel: search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined, onAction: resetFilters })), !loading && !error && grouped.map((g) => (_jsx(PlatformSection, { platform: g.platform, dashboards: g.dashboards, isPinned: isPinned, onOpen: onOpenDashboard, onTogglePin: (d) => toggle(d.dashboard_id) }, g.platform.name)))] }), _jsx(Footer, { metadata: metadata }), _jsx(AccessRequestModal, { open: openAccess, onClose: () => setOpenAccess(false), items: accessCatalog?.items ?? [], allowedHosts: ['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com'], onError: (m) => show(m, 'error') }), _jsx(ToastView, { toast: toast })] }));
 }

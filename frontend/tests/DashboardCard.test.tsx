@@ -10,11 +10,9 @@ const d: Dashboard = {
 };
 
 describe('DashboardCard', () => {
-  it('renders name, category, and market', () => {
+  it('renders the dashboard name', () => {
     render(<DashboardCard dashboard={d} pinned={false} onOpen={() => {}} onTogglePin={() => {}} />);
     expect(screen.getByText('Test Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Commercial')).toBeInTheDocument();
-    expect(screen.getByText('Global')).toBeInTheDocument();
   });
 
   it('fires onOpen when clicked', () => {

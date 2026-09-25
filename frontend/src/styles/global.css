@@ -224,7 +224,7 @@ main { max-width: 1364px; margin: 0 auto; padding: 30px clamp(18px, 4vw, 56px) 1
 }
 .card__name {
   font-weight: 600; font-size: 16.5px; line-height: 1.3; letter-spacing: -.01em;
-  color: var(--text); margin: 0; padding-right: 30px;
+  color: var(--text); margin: 0; padding-right: 36px;
   overflow-wrap: break-word;
 }
 .card__row { display: flex; align-items: center; gap: 9px; margin-top: auto; }
@@ -236,8 +236,9 @@ main { max-width: 1364px; margin: 0 auto; padding: 30px clamp(18px, 4vw, 56px) 1
   color: color-mix(in srgb, var(--accent) 78%, #000);
 }
 .fav {
-  position: absolute; top: 10px; right: 9px; width: 30px; height: 30px;
+  position: absolute; top: 10px; right: 9px; width: 34px; height: 34px;
   border-radius: 8px; display: grid; place-items: center; color: var(--muted-2);
+  font-size: 20px; line-height: 1;
   transition: background .15s, color .15s, transform .15s;
 }
 .fav:hover { background: color-mix(in srgb, var(--accent) 10%, #fff); color: var(--accent); transform: scale(1.08); }

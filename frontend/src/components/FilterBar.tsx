@@ -11,7 +11,6 @@ interface Props {
   available: AvailableFilters | undefined;
   value: FilterState;
   onChange: (next: FilterState) => void;
-  pinnedCount: number;
   /** Uniform accent (mockup v2_new: #3B9EDE) applied to every category chip swatch. */
   categoryAccent?: string;
   /** Preferred display order for category chips. Categories not in this list
@@ -38,7 +37,7 @@ function orderCategories<T extends { value: string }>(
   return out;
 }
 
-export function FilterBar({ available, value, onChange, pinnedCount, categoryAccent, categoryOrder }: Props) {
+export function FilterBar({ available, value, onChange, categoryAccent, categoryOrder }: Props) {
   const orderedCategories = orderCategories(available?.categories, categoryOrder);
   return (
     <div className="filterbar" aria-label="Dashboard filters">
@@ -64,14 +63,6 @@ export function FilterBar({ available, value, onChange, pinnedCount, categoryAcc
             <span className="fchip__c">{p.dashboard_count}</span>
           </button>
         ))}
-        <button
-          type="button"
-          className={`fchip ${value.pinnedOnly ? 'on' : ''}`}
-          onClick={() => onChange({ ...value, pinnedOnly: !value.pinnedOnly })}
-          aria-pressed={value.pinnedOnly}
-        >
-          ★ Pinned<span className="fchip__c">{pinnedCount}</span>
-        </button>
       </div>
 
       <div className="fgroup">
@@ -94,27 +85,6 @@ export function FilterBar({ available, value, onChange, pinnedCount, categoryAcc
               <span className="fchip__sw" style={{ background: categoryAccent }} aria-hidden />
             )}
             {c.label}<span className="fchip__c">{c.count}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className="fgroup">
-        <span className="frow__label">Market</span>
-        <button
-          type="button"
-          className={`fchip ${value.market === null ? 'on' : ''}`}
-          onClick={() => onChange({ ...value, market: null })}
-        >
-          All
-        </button>
-        {available?.markets.map((m) => (
-          <button
-            type="button"
-            key={m.value}
-            className={`fchip ${value.market === m.value ? 'on' : ''}`}
-            onClick={() => onChange({ ...value, market: m.value })}
-          >
-            {m.label}<span className="fchip__c">{m.count}</span>
           </button>
         ))}
       </div>

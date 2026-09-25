@@ -41,10 +41,6 @@ export function DashboardCard({ dashboard, pinned, onOpen, onTogglePin, accentCo
       >
         {pinned ? '\u2605' : '\u2606'}
       </button>
-      <div className="card__row">
-        {dashboard.category && <span className="chip">{dashboard.category}</span>}
-        {dashboard.market && <span className="card__meta">{dashboard.market}</span>}
-      </div>
 
       {hasTooltip && (
         <div className="tip" role="tooltip">

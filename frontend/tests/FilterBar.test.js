@@ -11,19 +11,17 @@ const AVAILABLE = {
     markets: [{ value: 'Germany', label: 'Germany', count: 2 }],
 };
 describe('FilterBar', () => {
-    it('renders platform, category, market chips with counts', () => {
+    it('renders platform and category chips with counts', () => {
         const value = { platform: null, category: null, market: null, pinnedOnly: false };
-        render(_jsx(FilterBar, { available: AVAILABLE, value: value, onChange: () => { }, pinnedCount: 0 }));
+        render(_jsx(FilterBar, { available: AVAILABLE, value: value, onChange: () => { } }));
         expect(screen.getByText('T&C Global')).toBeInTheDocument();
         expect(screen.getByText('Commercial')).toBeInTheDocument();
-        expect(screen.getByText('Germany')).toBeInTheDocument();
         expect(screen.getByText('3')).toBeInTheDocument();
         expect(screen.getByText('4')).toBeInTheDocument();
-        expect(screen.getByText('2')).toBeInTheDocument();
     });
     it('selecting a platform chip calls onChange', () => {
         let state = { platform: null, category: null, market: null, pinnedOnly: false };
-        render(_jsx(FilterBar, { available: AVAILABLE, value: state, onChange: (n) => { state = n; }, pinnedCount: 0 }));
+        render(_jsx(FilterBar, { available: AVAILABLE, value: state, onChange: (n) => { state = n; } }));
         fireEvent.click(screen.getByText('T&C Global'));
         expect(state.platform).toBe('T&C Global');
     });

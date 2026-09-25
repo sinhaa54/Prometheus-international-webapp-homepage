@@ -30,7 +30,6 @@ export function Header({
             <div className="brand__plate" aria-label="Pfizer">Pfizer</div>
             <div className="brand__div" aria-hidden />
             <div className="brand__lockup">
-              <div className="brand__kicker">Prometheus</div>
               <div className="brand__name">Tender &amp; Contract Analytics</div>
             </div>
           </div>
@@ -60,9 +59,9 @@ export function Header({
 
         <div className="hero">
           <div>
-            <div className="eyebrow">Prometheus · Analytics portal</div>
+            <div className="eyebrow">Analytics portal</div>
             <h1 className="hero__title">
-              {greeting} <span className="grad">Welcome back.</span>
+              {greeting}
             </h1>
             <p className="hero__lede">
               Explore Global Tenders &amp; Contracts analytics across platforms and markets.

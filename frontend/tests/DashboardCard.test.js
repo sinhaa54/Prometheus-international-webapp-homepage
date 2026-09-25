@@ -8,11 +8,9 @@ const d = {
     display_order: 1, is_active: true, tags: [],
 };
 describe('DashboardCard', () => {
-    it('renders name, category, and market', () => {
+    it('renders the dashboard name', () => {
         render(_jsx(DashboardCard, { dashboard: d, pinned: false, onOpen: () => { }, onTogglePin: () => { } }));
         expect(screen.getByText('Test Dashboard')).toBeInTheDocument();
-        expect(screen.getByText('Commercial')).toBeInTheDocument();
-        expect(screen.getByText('Global')).toBeInTheDocument();
     });
     it('fires onOpen when clicked', () => {
         const onOpen = vi.fn();
