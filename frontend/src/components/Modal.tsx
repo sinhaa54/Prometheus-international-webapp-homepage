@@ -9,16 +9,17 @@ interface Props {
   description?: string;
   children: ReactNode;
   labelledById?: string;
+  className?: string;
 }
 
-export function Modal({ open, onClose, title, eyebrow, description, children, labelledById }: Props) {
+export function Modal({ open, onClose, title, eyebrow, description, children, labelledById, className }: Props) {
   const ref = useModalA11y(open, onClose);
   if (!open) return null;
   const titleId = labelledById ?? 'modal-title';
   return (
     <div className="backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div
-        className="modal"
+        className={`modal${className ? ` ${className}` : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

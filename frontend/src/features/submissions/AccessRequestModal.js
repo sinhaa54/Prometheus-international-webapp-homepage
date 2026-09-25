@@ -1,10 +1,11 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 /**
  * "Get access to a dashboard" modal.
  *
- * Two-step drill-down: first pick a platform (ELVIS / T&C Global / Market
- * Specific Solutions), then pick a dashboard within it. Selecting a
- * dashboard opens its access-request URL directly in a new tab.
+ * Two-pane hierarchical layout: the left pane always lists the platforms
+ * (ELVIS / T&C Global / Market Specific Solutions) and stays visible; the
+ * right pane shows the dashboards for whichever platform is selected.
+ * Selecting a dashboard opens its access-request URL directly in a new tab.
  *
  * Each row links out to an external Office Forms / rm.pfizer.com URL that
  * has been server-side allowlisted (see backend `ALLOWED_ACCESS_REQUEST_HOSTS`).
@@ -19,7 +20,7 @@ const PLATFORM_LABELS = {
 };
 export function AccessRequestModal({ open, onClose, items, allowedHosts, onError }) {
     const [activePlatform, setActivePlatform] = useState(null);
-    // Reset the drill-down whenever the modal is (re)opened.
+    // Reset the selection whenever the modal is (re)opened.
     useEffect(() => {
         if (open)
             setActivePlatform(null);
@@ -35,11 +36,7 @@ export function AccessRequestModal({ open, onClose, items, allowedHosts, onError
             onError('This access-request URL is not on the approved host allowlist.');
         }
     };
-    const title = activePlatform ? PLATFORM_LABELS[activePlatform] ?? activePlatform : 'Get access to a dashboard';
-    const description = activePlatform
-        ? 'Select a dashboard to open its request form.'
-        : 'Choose a platform to see the dashboards available for self-service access.';
-    return (_jsx(Modal, { open: open, onClose: onClose, title: title, eyebrow: "Request access", description: description, children: _jsx("div", { className: "modal__body", children: safeItems.length === 0 ? (_jsxs("p", { className: "access-note", role: "status", children: [_jsx(InfoIcon, {}), _jsx("span", { children: "No self-service access dashboards are available right now." })] })) : activePlatform === null ? (_jsx("ul", { className: "access-list", "aria-label": "Dashboard platforms", children: platforms.map((p) => (_jsx("li", { children: _jsxs("button", { type: "button", className: "access-item", onClick: () => setActivePlatform(p), children: [_jsx("span", { className: "access-item__ic", "aria-hidden": "true", children: _jsx(ItemIcon, { iconKey: safeItems.find((it) => it.platform === p)?.icon_key ?? '' }) }), _jsxs("span", { className: "access-item__txt", children: [_jsx("span", { className: "access-item__name", children: PLATFORM_LABELS[p] ?? p }), _jsxs("span", { className: "access-item__meta", children: [safeItems.filter((it) => it.platform === p).length, " dashboards"] })] }), _jsx("span", { className: "access-item__arrow", "aria-hidden": "true", children: _jsx(ArrowUpRightIcon, {}) })] }) }, p))) })) : (_jsxs(_Fragment, { children: [_jsxs("button", { type: "button", className: "access-back", onClick: () => setActivePlatform(null), children: [_jsx(BackArrowIcon, {}), "All platforms"] }), _jsx("ul", { className: "access-list", "aria-label": `Dashboards in ${title}`, children: dashboardsInPlatform.map((item) => (_jsx("li", { children: _jsxs("a", { className: "access-item", href: item.request_url, target: "_blank", rel: "noopener noreferrer", onClick: onClick(item), children: [_jsx("span", { className: "access-item__ic", "aria-hidden": "true", children: _jsx(ItemIcon, { iconKey: item.icon_key }) }), _jsxs("span", { className: "access-item__txt", children: [_jsx("span", { className: "access-item__name", children: item.name }), _jsx("span", { className: "access-item__meta", children: subline(item) })] }), _jsx("span", { className: "access-item__arrow", "aria-hidden": "true", children: _jsx(ArrowUpRightIcon, {}) })] }) }, item.name))) })] })) }) }));
+    return (_jsx(Modal, { open: open, onClose: onClose, title: "Get access to a dashboard", eyebrow: "Request access", description: "Choose a platform, then select a dashboard to open its request form.", className: "modal--wide", children: _jsx("div", { className: "modal__body", children: safeItems.length === 0 ? (_jsxs("p", { className: "access-note", role: "status", children: [_jsx(InfoIcon, {}), _jsx("span", { children: "No self-service access dashboards are available right now." })] })) : (_jsxs("div", { className: "access-columns", children: [_jsx("ul", { className: "access-platforms", "aria-label": "Dashboard platforms", children: platforms.map((p) => (_jsx("li", { children: _jsxs("button", { type: "button", className: `access-platform ${activePlatform === p ? 'on' : ''}`, onClick: () => setActivePlatform(p), "aria-pressed": activePlatform === p, children: [_jsx("span", { className: "access-platform__name", children: PLATFORM_LABELS[p] ?? p }), _jsx("span", { className: "access-platform__count", children: safeItems.filter((it) => it.platform === p).length })] }) }, p))) }), _jsx("div", { className: "access-detail", children: activePlatform === null ? (_jsxs("p", { className: "access-note", role: "status", children: [_jsx(InfoIcon, {}), _jsx("span", { children: "Select a platform on the left to see its dashboards." })] })) : (_jsx("ul", { className: "access-list", "aria-label": `Dashboards in ${PLATFORM_LABELS[activePlatform] ?? activePlatform}`, children: dashboardsInPlatform.map((item) => (_jsx("li", { children: _jsxs("a", { className: "access-item", href: item.request_url, target: "_blank", rel: "noopener noreferrer", onClick: onClick(item), children: [_jsx("span", { className: "access-item__ic", "aria-hidden": "true", children: _jsx(ItemIcon, { iconKey: item.icon_key }) }), _jsxs("span", { className: "access-item__txt", children: [_jsx("span", { className: "access-item__name", children: item.name }), _jsx("span", { className: "access-item__meta", children: subline(item) })] }), _jsx("span", { className: "access-item__arrow", "aria-hidden": "true", children: _jsx(ArrowUpRightIcon, {}) })] }) }, item.name))) })) })] })) }) }));
 }
 /** Only HTTPS URLs whose exact hostname is in `allowedHosts`. */
 export function isAccessUrlSafe(url, allowedHosts) {
@@ -76,9 +73,6 @@ function ItemIcon({ iconKey }) {
 }
 function ArrowUpRightIcon() {
     return (_jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round", children: _jsx("path", { d: "M7 17 17 7M8 7h9v9" }) }));
-}
-function BackArrowIcon() {
-    return (_jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round", children: _jsx("path", { d: "M19 12H5M11 18l-6-6 6-6" }) }));
 }
 function InfoIcon() {
     return (_jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: [_jsx("circle", { cx: "12", cy: "12", r: "9" }), _jsx("path", { d: "M12 11v5M12 7.5h.01" })] }));

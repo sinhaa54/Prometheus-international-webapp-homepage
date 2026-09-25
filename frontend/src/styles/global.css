@@ -283,6 +283,7 @@ footer {
   background: var(--card); border-radius: 20px; width: 100%; max-width: 520px;
   max-height: 92vh; overflow: auto; box-shadow: var(--shadow-lg);
 }
+.modal--wide { max-width: 720px; }
 .modal__head { padding: 24px 26px 4px; position: relative; }
 .modal__eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 .modal__title { font-weight: 700; font-size: 22px; letter-spacing: -.02em; margin: 0; }
@@ -392,6 +393,8 @@ footer {
   .search { flex: 1 1 100%; order: 5; }
   .filterbar { flex-wrap: wrap; }
   .fgroup { flex: 1 1 100%; }
+  .access-columns { flex-direction: column; }
+  .access-platforms { flex: 1 1 auto; flex-direction: row; flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -404,6 +407,34 @@ footer {
 }
 
 /* ---------- Access-request modal (v2_new list layout) ---------- */
+.access-columns {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.access-platforms {
+  display: flex; flex-direction: column; gap: 8px;
+  list-style: none; margin: 0; padding: 0;
+  flex: 0 0 180px;
+}
+.access-platforms > li { list-style: none; }
+.access-platform {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid var(--line); background: #fff;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  text-align: left; cursor: pointer;
+  transition: border-color .16s, background .16s, color .16s;
+}
+.access-platform:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.access-platform.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.access-platform__count {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  color: var(--muted-2); background: var(--paper);
+  border-radius: 999px; padding: 2px 8px;
+}
+.access-platform.on .access-platform__count { color: #fff; background: rgba(255, 255, 255, .22); }
+.access-detail {
+  flex: 1; min-width: 0; max-height: 420px; overflow-y: auto;
+}
 .access-list {
   display: flex; flex-direction: column; gap: 10px;
   list-style: none; margin: 0; padding: 0;
@@ -463,10 +494,3 @@ footer {
   color: var(--accent); flex: none; margin-top: 1px;
 }
 .access-note strong { color: var(--text); font-weight: 600; }
-.access-back {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-bottom: 12px; padding: 0; border: none; background: none;
-  font-size: 13px; font-weight: 600; color: var(--accent); cursor: pointer;
-}
-.access-back svg { width: 15px; height: 15px; }
-.access-back:hover { text-decoration: underline; }
