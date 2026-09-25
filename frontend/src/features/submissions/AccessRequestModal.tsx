@@ -1,18 +1,16 @@
 /**
  * "Get access to a dashboard" modal.
  *
- * v2_new redesign: instead of a submission form, this shows a curated list
- * of dashboards for which self-service access is available. Each row links
- * out to an external Office Forms URL that has been server-side allowlisted
- * (see backend `ALLOWED_ACCESS_REQUEST_HOSTS`).
+ * Two-step drill-down: first pick a platform (ELVIS / T&C Global / Market
+ * Specific Solutions), then pick a dashboard within it. Selecting a
+ * dashboard opens its access-request URL directly in a new tab.
  *
+ * Each row links out to an external Office Forms / rm.pfizer.com URL that
+ * has been server-side allowlisted (see backend `ALLOWED_ACCESS_REQUEST_HOSTS`).
  * The frontend performs a defensive second check via `isAccessUrlSafe` so a
  * bad row can never surface an unapproved redirect.
- *
- * Latest revision: added the "Other Dashboards" grouping (icon_key="grid")
- * with a custom `meta` line, and removed the bottom info-note (the grouping
- * replaces it).
  */
+import { useEffect, useState } from 'react';
 import { Modal } from '../../components/Modal';
 import type { AccessCatalogItem } from '../../types/api';
 
@@ -24,8 +22,25 @@ interface Props {
   onError: (message: string) => void;
 }
 
+/** Display labels for platform buckets (mirrors homepage section naming). */
+const PLATFORM_LABELS: Record<string, string> = {
+  Market: 'Market Specific Solutions',
+};
+
 export function AccessRequestModal({ open, onClose, items, allowedHosts, onError }: Props) {
+  const [activePlatform, setActivePlatform] = useState<string | null>(null);
+
+  // Reset the drill-down whenever the modal is (re)opened.
+  useEffect(() => {
+    if (open) setActivePlatform(null);
+  }, [open]);
+
   const safeItems = items.filter((it) => isAccessUrlSafe(it.request_url, allowedHosts));
+
+  const platforms = Array.from(new Set(safeItems.map((it) => it.platform)));
+  const dashboardsInPlatform = activePlatform
+    ? safeItems.filter((it) => it.platform === activePlatform)
+    : [];
 
   const onClick = (item: AccessCatalogItem) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isAccessUrlSafe(item.request_url, allowedHosts)) {
@@ -34,45 +49,75 @@ export function AccessRequestModal({ open, onClose, items, allowedHosts, onError
     }
   };
 
+  const title = activePlatform ? PLATFORM_LABELS[activePlatform] ?? activePlatform : 'Get access to a dashboard';
+  const description = activePlatform
+    ? 'Select a dashboard to open its request form.'
+    : 'Choose a platform to see the dashboards available for self-service access.';
+
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title="Get access to a dashboard"
-      eyebrow="Request access"
-      description="Self-service access is available for the dashboards below. Select one to open its request form."
-    >
+    <Modal open={open} onClose={onClose} title={title} eyebrow="Request access" description={description}>
       <div className="modal__body">
         {safeItems.length === 0 ? (
           <p className="access-note" role="status">
             <InfoIcon />
             <span>No self-service access dashboards are available right now.</span>
           </p>
-        ) : (
-          <ul className="access-list" aria-label="Self-service access dashboards">
-            {safeItems.map((item) => (
-              <li key={item.name}>
-                <a
+        ) : activePlatform === null ? (
+          <ul className="access-list" aria-label="Dashboard platforms">
+            {platforms.map((p) => (
+              <li key={p}>
+                <button
+                  type="button"
                   className="access-item"
-                  href={item.request_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={onClick(item)}
+                  onClick={() => setActivePlatform(p)}
                 >
                   <span className="access-item__ic" aria-hidden="true">
-                    <ItemIcon iconKey={item.icon_key} />
+                    <ItemIcon iconKey={safeItems.find((it) => it.platform === p)?.icon_key ?? ''} />
                   </span>
                   <span className="access-item__txt">
-                    <span className="access-item__name">{item.name}</span>
-                    <span className="access-item__meta">{subline(item)}</span>
+                    <span className="access-item__name">{PLATFORM_LABELS[p] ?? p}</span>
+                    <span className="access-item__meta">
+                      {safeItems.filter((it) => it.platform === p).length} dashboards
+                    </span>
                   </span>
                   <span className="access-item__arrow" aria-hidden="true">
                     <ArrowUpRightIcon />
                   </span>
-                </a>
+                </button>
               </li>
             ))}
           </ul>
+        ) : (
+          <>
+            <button type="button" className="access-back" onClick={() => setActivePlatform(null)}>
+              <BackArrowIcon />
+              All platforms
+            </button>
+            <ul className="access-list" aria-label={`Dashboards in ${title}`}>
+              {dashboardsInPlatform.map((item) => (
+                <li key={item.name}>
+                  <a
+                    className="access-item"
+                    href={item.request_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={onClick(item)}
+                  >
+                    <span className="access-item__ic" aria-hidden="true">
+                      <ItemIcon iconKey={item.icon_key} />
+                    </span>
+                    <span className="access-item__txt">
+                      <span className="access-item__name">{item.name}</span>
+                      <span className="access-item__meta">{subline(item)}</span>
+                    </span>
+                    <span className="access-item__arrow" aria-hidden="true">
+                      <ArrowUpRightIcon />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
     </Modal>
@@ -93,10 +138,10 @@ export function isAccessUrlSafe(url: string, allowedHosts: string[]): boolean {
   return allowedHosts.map((h) => h.toLowerCase()).includes(host);
 }
 
-/** Prefer server-provided `meta`; fall back to "platform · category". */
+/** Prefer server-provided `meta`; fall back to "category". */
 function subline(item: AccessCatalogItem): string {
   if (item.meta) return item.meta;
-  return item.category ? `${item.platform} \u00B7 ${item.category}` : item.platform;
+  return item.category ?? '';
 }
 
 // ---------- inline SVGs (mirrors the mockup) ----------
@@ -135,6 +180,14 @@ function ArrowUpRightIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+function BackArrowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 12H5M11 18l-6-6 6-6" />
     </svg>
   );
 }

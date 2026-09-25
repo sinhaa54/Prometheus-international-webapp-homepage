@@ -11,28 +11,24 @@
   "contact_mailto": "mailto:DL-Prometheus_International_Operations@pfizer.com?subject=Prometheus%20%E2%80%94%20Analytics%20query",
   "feedback_url": "https://forms.cloud.microsoft/r/EBBNExBV23",
   "access_catalog": [
-    {
-      "name": "ELVIS Market Allocation Dashboard",
-      "platform": "ELVIS",
-      "category": "Commercial",
-      "icon_key": "chart",
-      "request_url": "https://forms.cloud.microsoft/r/T9jADnWZXM"
-    },
-    {
-      "name": "T&C Enterprise Dashboard",
-      "platform": "T&C Global",
-      "category": "Commercial",
-      "icon_key": "pyramid",
-      "request_url": "https://rm.pfizer.com/?continue#/application/6489/form"
-    },
-    {
-      "name": "Other Dashboards",
-      "platform": "Multiple",
-      "category": null,
-      "icon_key": "grid",
-      "meta": "For PGS, T&C Regulatory and Specific Market Dashboards",
-      "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h"
-    }
+    { "name": "T&C Enterprise Dashboard", "platform": "T&C Global", "category": "Commercial", "icon_key": "pyramid", "request_url": "https://rm.pfizer.com/?continue#/application/6489/form" },
+    { "name": "PGS- T&C Global Supply Dashboard", "platform": "T&C Global", "category": "Demand & Supply", "icon_key": "pyramid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "T&C Regulatory Perspective", "platform": "T&C Global", "category": "Regulatory", "icon_key": "pyramid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Australia Pricing Engine", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Brazil Commercial Offers Tracking", "platform": "Market", "category": "Commercial", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Egypt Price Perspective", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "France Contract Performance Dashboard", "platform": "Market", "category": "Commercial", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Germany Cam Contract Performance Tracker", "platform": "Market", "category": "Commercial", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Germany Hospital Contracting", "platform": "Market", "category": "Commercial", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "Germany Price Perspective", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "KSA Price Perspective", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "KSA Supply Perspective", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "KSA OOS", "platform": "Market", "category": "Pricing", "icon_key": "grid", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "ELVIS 2.0 Price Approval Tool Dashboard", "platform": "ELVIS", "category": "Pricing", "icon_key": "chart", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "ELVIS Allocation Reporting Dashboard", "platform": "ELVIS", "category": "Commercial", "icon_key": "chart", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "ELVIS DSA Tool", "platform": "ELVIS", "category": "Demand & Supply", "icon_key": "chart", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "ELVIS Global Performance Tracking Dashboard", "platform": "ELVIS", "category": "Commercial", "icon_key": "chart", "request_url": "https://forms.cloud.microsoft/r/JzcUytBV4h" },
+    { "name": "ELVIS Market Allocation Dashboard", "platform": "ELVIS", "category": "Commercial", "icon_key": "chart", "request_url": "https://forms.cloud.microsoft/r/T9jADnWZXM" }
   ],
   "dashboards": [
     {"dashboard_id":"ELV-MKT-005","dashboard_name":"ELVIS Market Allocation Dashboard","dashboard_description":"Dashboard for Market Leads with Allocation, Operating Plan, Revenue Info.","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/ELVISMarketDashboard/OpportunityOverview","platform":"ELVIS","category":"Commercial","subcategory":"Market","market":"Global","country_code":null,"display_order":5,"is_active":true,"owner_name":"Hubert Beekhuizen","owner_email":null,"tags":["elvis","market","commercial"],"last_updated_at":null},
@@ -47,9 +43,12 @@
     {"dashboard_id":"MKT-BRA-002","dashboard_name":"Brazil Commercial Offers Tracking","dashboard_description":"Commercial Offers Tracking with Master and Child Details for Brazil","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/BrazilPrometheusHomepage/Homepage","platform":"Market","category":"Commercial","subcategory":"Commercial Offers","market":"Brazil","country_code":"BR","display_order":20,"is_active":true,"owner_name":"Novelli Rogerio, Kenia Martens de Santana","owner_email":null,"tags":["market","commercial","brazil"],"last_updated_at":null},
     {"dashboard_id":"MKT-EGY-003","dashboard_name":"Egypt Price Perspective","dashboard_description":"Pricing Analytics Dashboard for Egypt","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/EgyptPricePerspective/OpportunityAssessment","platform":"Market","category":"Pricing","subcategory":"Price Perspective","market":"Egypt","country_code":"EG","display_order":30,"is_active":true,"owner_name":"Morsy Islam","owner_email":null,"tags":["market","pricing","egypt"],"last_updated_at":null},
     {"dashboard_id":"MKT-FRA-004","dashboard_name":"France Contract Performance Dashboard","dashboard_description":"Contract and Revenue Analytics Dashboard for France","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/FranceContractPerformanceDashboard/FranceContractPerformanceDashboard","platform":"Market","category":"Commercial","subcategory":"Contract Performance","market":"France","country_code":"FR","display_order":40,"is_active":true,"owner_name":"Marc Sourd","owner_email":null,"tags":["market","commercial","france"],"last_updated_at":null},
+    {"dashboard_id":"MKT-DEU-007","dashboard_name":"Germany Cam Contract Performance Tracker","dashboard_description":"Cam Contract Performance Tracker for Germany","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/GermanyCamContractPerformanceTracker/PerformanceTracker","platform":"Market","category":"Commercial","subcategory":"Cam Contract Performance","market":"Germany","country_code":"DE","display_order":45,"is_active":true,"owner_name":"Ilan Gitleman","owner_email":null,"tags":["market","commercial","germany"],"last_updated_at":null},
     {"dashboard_id":"MKT-DEU-005","dashboard_name":"Germany One Pfizer CAM","dashboard_description":"Pricing Analytics Dashboard for Germany","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/GermanyPricePerspective/LandingPage","platform":"Market","category":"Pricing","subcategory":"One Pfizer CAM","market":"Germany","country_code":"DE","display_order":50,"is_active":true,"owner_name":"Ilan Gitleman","owner_email":null,"tags":["market","pricing","germany"],"last_updated_at":null},
     {"dashboard_id":"MKT-DEU-006","dashboard_name":"Germany Com Ops Monthly Accruals Tracker","dashboard_description":"Hospital Contracting Dashboard for Germany","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/GermanyHospitalContracting/Accurals","platform":"Market","category":"Commercial","subcategory":"Accruals","market":"Germany","country_code":"DE","display_order":60,"is_active":true,"owner_name":"Ilan Gitleman","owner_email":null,"tags":["market","commercial","germany","accruals"],"last_updated_at":null},
     {"dashboard_id":"MKT-KSA-007","dashboard_name":"KSA Price Perspective","dashboard_description":"Pricing Analytics Dashboard for KSA","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/KSAPricePerspective/OpportunityAssessment","platform":"Market","category":"Pricing","subcategory":"Price Perspective","market":"KSA","country_code":"SA","display_order":70,"is_active":true,"owner_name":"Abdullah Haitham","owner_email":null,"tags":["market","pricing","ksa"],"last_updated_at":null},
+    {"dashboard_id":"MKT-KSA-008","dashboard_name":"KSA Supply Perspective","dashboard_description":"Supply Analytics and Tracking Dashboard for KSA","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/KSASupplyPerspective/KSASupplyPerspective","platform":"Market","category":"Pricing","subcategory":"Supply Perspective","market":"KSA","country_code":"SA","display_order":75,"is_active":true,"owner_name":"Abdullah Haitham","owner_email":null,"tags":["market","pricing","ksa","supply"],"last_updated_at":null},
+    {"dashboard_id":"MKT-KSA-009","dashboard_name":"KSA OOS","dashboard_description":"Tracks out of stock situations for Pfizer in KSA","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/KSACompetitiveOOS/CompetitiveOOS-KSA","platform":"Market","category":"Pricing","subcategory":"Competitive OOS","market":"KSA","country_code":"SA","display_order":80,"is_active":true,"owner_name":"Abdullah Haitham","owner_email":null,"tags":["market","pricing","ksa","oos"],"last_updated_at":null},
 
     {"dashboard_id":"TCG-ENT-001","dashboard_name":"T&C Enterprise Dashboard","dashboard_description":"OP Tracking and Tender Planning Dashboard","tableau_url":"https://eu-west-1a.online.tableau.com/#/site/emeaprod/views/TCEnterpriseDashboard/ExecutiveSummary","platform":"T&C Global","category":"Commercial","subcategory":"T&C Enterprise","market":"Global","country_code":null,"display_order":10,"is_active":true,"owner_name":"Mahler Zoltan, Hubert Beekhuizen","owner_email":null,"tags":["t&c","commercial","enterprise"],"last_updated_at":null},
     {"dashboard_id":"TCG-PGS-002","dashboard_name":"PGS- T&C Global Supply Dashboard","dashboard_description":"Global Volume Tracking Dashboard for PGS and T&C Group","tableau_url":"https://us-east-1.online.tableau.com/#/site/amerprod/views/PGS-TCGlobalSupplyReport/PGS-TCGlobalSupplyReport","platform":"T&C Global","category":"Demand & Supply","subcategory":"PGS","market":"Global","country_code":null,"display_order":20,"is_active":true,"owner_name":"Kathrina Erikha De Gracia-Ramos","owner_email":null,"tags":["t&c","supply","pgs"],"last_updated_at":null},

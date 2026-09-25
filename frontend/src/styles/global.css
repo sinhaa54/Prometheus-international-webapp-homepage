@@ -178,13 +178,10 @@ main { max-width: 1364px; margin: 0 auto; padding: 30px clamp(18px, 4vw, 56px) 1
 
 /* filter bar */
 .filterbar {
-  display: flex; flex-wrap: nowrap; align-items: center;
+  display: flex; flex-wrap: wrap; align-items: center;
   gap: 8px 18px; margin-bottom: 26px;
-  overflow-x: auto; scrollbar-width: none;
-  padding-bottom: 2px;
 }
-.filterbar::-webkit-scrollbar { display: none; }
-.fgroup { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; flex: none; }
+.fgroup { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .frow__label { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .fchip {
   display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
@@ -415,6 +412,7 @@ footer {
   padding: 14px 15px; border-radius: 13px;
   border: 1px solid var(--line); background: #fff;
   text-decoration: none; color: inherit;
+  width: 100%; text-align: left; font: inherit; cursor: pointer;
   transition: border-color .16s, box-shadow .16s, transform .16s;
 }
 .access-item:hover {
@@ -463,3 +461,10 @@ footer {
   color: var(--accent); flex: none; margin-top: 1px;
 }
 .access-note strong { color: var(--text); font-weight: 600; }
+.access-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-bottom: 12px; padding: 0; border: none; background: none;
+  font-size: 13px; font-weight: 600; color: var(--accent); cursor: pointer;
+}
+.access-back svg { width: 15px; height: 15px; }
+.access-back:hover { text-decoration: underline; }

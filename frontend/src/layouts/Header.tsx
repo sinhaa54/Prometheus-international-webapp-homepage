@@ -1,3 +1,5 @@
+import pfizerLogo from '../assets/pfizer-logo.png';
+
 interface Props {
   onOpenAccess: () => void;
   contactMailto: string;
@@ -28,7 +30,7 @@ export function Header({
         <nav className="nav" aria-label="Primary">
           <div className="brand">
             <div className="brand__plate" aria-label="Pfizer">
-              <img src="/pfizer-logo.png" alt="Pfizer" className="brand__plate-img" />
+              <img src={pfizerLogo} alt="Pfizer" className="brand__plate-img" />
             </div>
             <div className="brand__div" aria-hidden />
             <div className="brand__lockup">
