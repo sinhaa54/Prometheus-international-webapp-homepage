@@ -6,6 +6,7 @@ interface Props {
   onOpen: (d: Dashboard) => void;
   onTogglePin: (d: Dashboard) => void;
   accentColor?: string;
+  requestAccessUrl?: string;
 }
 
 /**
@@ -16,9 +17,9 @@ interface Props {
  * (`.card:hover .tip`, `.card:focus-within .tip`). This keeps a11y correct
  * for keyboard users and avoids the complexity of a portal.
  */
-export function DashboardCard({ dashboard, pinned, onOpen, onTogglePin, accentColor }: Props) {
+export function DashboardCard({ dashboard, pinned, onOpen, onTogglePin, accentColor, requestAccessUrl }: Props) {
   const style = accentColor ? ({ '--accent': accentColor } as React.CSSProperties) : undefined;
-  const hasTooltip = Boolean(dashboard.dashboard_description || dashboard.owner_name);
+  const hasTooltip = Boolean(dashboard.dashboard_description || dashboard.owner_name || requestAccessUrl);
   return (
     <div
       className="card"
@@ -41,6 +42,10 @@ export function DashboardCard({ dashboard, pinned, onOpen, onTogglePin, accentCo
       >
         {pinned ? '\u2605' : '\u2606'}
       </button>
+      <div className="card__row">
+        {dashboard.category && <span className="chip">{dashboard.category}</span>}
+        {dashboard.market && <span className="card__meta">{dashboard.market}</span>}
+      </div>
 
       {hasTooltip && (
         <div className="tip" role="tooltip">
@@ -55,6 +60,19 @@ export function DashboardCard({ dashboard, pinned, onOpen, onTogglePin, accentCo
               </svg>
               <span className="tip__owner-label">Owner</span>
               <span className="tip__owner-name">{dashboard.owner_name}</span>
+            </div>
+          )}
+          {requestAccessUrl && (
+            <div className="tip__access">
+              <span className="tip__access-label">Request Access:</span>
+              <a
+                href={requestAccessUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Link
+              </a>
             </div>
           )}
         </div>

@@ -11,13 +11,21 @@ import { ToastView, useToast } from './components/Toast';
 import { getAccessCatalog } from './api/endpoints';
 import { useDashboards, useMetadata } from './features/dashboards/useDashboards';
 import { usePinnedDashboards } from './features/favourites/usePinnedDashboards';
-import { AccessRequestModal } from './features/submissions/AccessRequestModal';
+import { AccessRequestModal, isAccessUrlSafe } from './features/submissions/AccessRequestModal';
 import { useDebouncedValue } from './hooks/useDebouncedValue';
 import { Footer } from './layouts/Footer';
 import { Header } from './layouts/Header';
 import { openTableauDashboard } from './services/tableau';
 import { homepageGreeting } from './utils/greeting';
 const INITIAL_FILTERS = { platform: null, category: null, market: null, pinnedOnly: false };
+const ALLOWED_ACCESS_REQUEST_HOSTS = ['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com'];
+/** Best-effort match of a dashboard to a curated access-catalog entry: exact
+ *  name, then platform+category, then the catch-all "Multiple" platform entry. */
+function findAccessCatalogItem(dashboard, items) {
+    return (items.find((it) => it.name === dashboard.dashboard_name) ??
+        items.find((it) => it.platform === dashboard.platform && it.category === dashboard.category) ??
+        items.find((it) => it.platform === 'Multiple'));
+}
 export default function App() {
     // ---- data ----
     const { data: metadata } = useMetadata();
@@ -129,7 +137,20 @@ export default function App() {
             .catch(() => { });
         return () => ctrl.abort();
     }, []);
-    return (_jsxs(ErrorBoundary, { children: [_jsx(Header, { onOpenAccess: () => setOpenAccess(true), contactMailto: metadata?.contact_mailto ?? 'mailto:analytics@pfizer.com', feedbackUrl: metadata?.feedback_url ?? '', greeting: greeting, searchSlot: _jsx(SearchBar, { value: searchInput, onChange: setSearchInput, suggestions: sugData?.items ?? [], loading: sugLoading, onSelect: (d) => { setSearchInput(''); onOpenDashboard(d); }, onClear: () => setSearchInput('') }), pinnedSlot: _jsx(PinnedPanel, { pinned: pinnedDashboards, onOpen: onOpenDashboard, onUnpin: (d) => toggle(d.dashboard_id), onViewAll: () => setFilters({ ...INITIAL_FILTERS, pinnedOnly: true }) }) }), _jsxs("main", { id: "main-content", children: [_jsx(FilterBar, { available: visibleAvailableFilters, value: filters, onChange: setFilters, categoryAccent: metadata?.category_accent, categoryOrder: metadata?.category_order }), (filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (_jsxs("div", { className: "search-banner", role: "status", children: [_jsxs("span", { children: [search ? _jsxs(_Fragment, { children: ["Filtering by ", _jsxs("strong", { children: ["\u201C", search, "\u201D"] }), " \u00B7 "] }) : null, filters.pinnedOnly ? _jsx(_Fragment, { children: "Pinned only \u00B7 " }) : null, data?.total ?? 0, " matching dashboards."] }), _jsx("button", { type: "button", className: "fchip", onClick: resetFilters, children: "Reset filters" })] })), error && (_jsxs("div", { className: "error-banner", role: "alert", children: ["Could not load dashboards: ", error] })), loading && _jsx(LoadingSkeletonGrid, {}), !loading && !error && grouped.length === 0 && (_jsx(EmptyState, { title: "No dashboards to show", message: search || filters.platform || filters.category || filters.market || filters.pinnedOnly
+    // Per-dashboard "Request Access" link for the tile tooltip, resolved from the
+    // curated access catalog (no per-dashboard API field needed).
+    const accessUrlByDashboard = useMemo(() => {
+        const catalogItems = accessCatalog?.items ?? [];
+        const map = new Map();
+        for (const d of items) {
+            const match = findAccessCatalogItem(d, catalogItems);
+            if (match && isAccessUrlSafe(match.request_url, ALLOWED_ACCESS_REQUEST_HOSTS)) {
+                map.set(d.dashboard_id, match.request_url);
+            }
+        }
+        return map;
+    }, [items, accessCatalog]);
+    return (_jsxs(ErrorBoundary, { children: [_jsx(Header, { onOpenAccess: () => setOpenAccess(true), contactMailto: metadata?.contact_mailto ?? 'mailto:analytics@pfizer.com', feedbackUrl: metadata?.feedback_url ?? '', greeting: greeting, searchSlot: _jsx(SearchBar, { value: searchInput, onChange: setSearchInput, suggestions: sugData?.items ?? [], loading: sugLoading, onSelect: (d) => { setSearchInput(''); onOpenDashboard(d); }, onClear: () => setSearchInput('') }), pinnedSlot: _jsx(PinnedPanel, { pinned: pinnedDashboards, onOpen: onOpenDashboard, onUnpin: (d) => toggle(d.dashboard_id) }) }), _jsxs("main", { id: "main-content", children: [_jsx(FilterBar, { available: visibleAvailableFilters, value: filters, onChange: setFilters, categoryAccent: metadata?.category_accent, categoryOrder: metadata?.category_order }), (filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (_jsxs("div", { className: "search-banner", role: "status", children: [_jsxs("span", { children: [search ? _jsxs(_Fragment, { children: ["Filtering by ", _jsxs("strong", { children: ["\u201C", search, "\u201D"] }), " \u00B7 "] }) : null, filters.pinnedOnly ? _jsx(_Fragment, { children: "Pinned only \u00B7 " }) : null, data?.total ?? 0, " matching dashboards."] }), _jsx("button", { type: "button", className: "fchip", onClick: resetFilters, children: "Reset filters" })] })), error && (_jsxs("div", { className: "error-banner", role: "alert", children: ["Could not load dashboards: ", error] })), loading && _jsx(LoadingSkeletonGrid, {}), !loading && !error && grouped.length === 0 && (_jsx(EmptyState, { title: "No dashboards to show", message: search || filters.platform || filters.category || filters.market || filters.pinnedOnly
                             ? 'Try a different search or clear your filters.'
-                            : 'The catalogue is empty. Add rows to the source dataset to get started.', actionLabel: search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined, onAction: resetFilters })), !loading && !error && grouped.map((g) => (_jsx(PlatformSection, { platform: g.platform, dashboards: g.dashboards, isPinned: isPinned, onOpen: onOpenDashboard, onTogglePin: (d) => toggle(d.dashboard_id) }, g.platform.name)))] }), _jsx(Footer, { metadata: metadata }), _jsx(AccessRequestModal, { open: openAccess, onClose: () => setOpenAccess(false), items: accessCatalog?.items ?? [], allowedHosts: ['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com'], onError: (m) => show(m, 'error') }), _jsx(ToastView, { toast: toast })] }));
+                            : 'The catalogue is empty. Add rows to the source dataset to get started.', actionLabel: search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined, onAction: resetFilters })), !loading && !error && grouped.map((g) => (_jsx(PlatformSection, { platform: g.platform, dashboards: g.dashboards, isPinned: isPinned, onOpen: onOpenDashboard, onTogglePin: (d) => toggle(d.dashboard_id), accessUrlByDashboard: accessUrlByDashboard }, g.platform.name)))] }), _jsx(Footer, { metadata: metadata }), _jsx(AccessRequestModal, { open: openAccess, onClose: () => setOpenAccess(false), items: accessCatalog?.items ?? [], allowedHosts: ALLOWED_ACCESS_REQUEST_HOSTS, onError: (m) => show(m, 'error') }), _jsx(ToastView, { toast: toast })] }));
 }

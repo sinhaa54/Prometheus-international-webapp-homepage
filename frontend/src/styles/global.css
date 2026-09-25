@@ -60,13 +60,14 @@ input, select, textarea { font-family: inherit; font-size: inherit; color: inher
   display: inline-flex;
   align-items: center;
   background: #fff;
-  padding: 7px 13px;
+  padding: 6px 12px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 10, 40, .25);
   color: var(--pfz-deep);
   font-weight: 700;
   letter-spacing: .01em;
 }
+.brand__plate-img { display: block; height: 22px; width: auto; }
 .brand__div { width: 1px; height: 32px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .28), transparent); }
 .brand__lockup { display: flex; flex-direction: column; gap: 2px; }
 .brand__kicker {
@@ -113,6 +114,7 @@ h1.hero__title {
   font-weight: 600;
 }
 .hero__lede { font-size: 14.5px; line-height: 1.5; color: #AEBAD0; max-width: 52ch; margin: 0; }
+.lede-accent { color: #5AC8FA; font-weight: 700; }
 
 /* pinned panel */
 .favs {
@@ -346,7 +348,7 @@ footer {
 }
 .card:hover .tip,
 .card:focus-visible .tip,
-.card:focus-within .tip { opacity: 1; transform: translateY(0); }
+.card:focus-within .tip { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .tip__desc { color: #EAF0F8; }
 .tip__owner {
   display: flex; align-items: center; gap: 7px;
@@ -365,6 +367,20 @@ footer {
 .tip__owner-name {
   color: #fff; font-weight: 600;
   margin-left: auto; letter-spacing: .01em;
+}
+.tip__access {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, .15);
+  font-family: var(--font-mono); font-size: 11px;
+}
+.tip__access-label {
+  color: #9FB0CC; letter-spacing: .08em;
+  text-transform: uppercase; font-size: 9.5px;
+}
+.tip__access a {
+  color: color-mix(in srgb, var(--accent) 55%, #fff);
+  font-weight: 600; text-decoration: underline;
 }
 
 /* responsive */

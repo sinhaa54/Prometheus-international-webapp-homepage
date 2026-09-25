@@ -10,15 +10,26 @@ import { ToastView, useToast } from './components/Toast';
 import { getAccessCatalog } from './api/endpoints';
 import { useDashboards, useMetadata } from './features/dashboards/useDashboards';
 import { usePinnedDashboards } from './features/favourites/usePinnedDashboards';
-import { AccessRequestModal } from './features/submissions/AccessRequestModal';
+import { AccessRequestModal, isAccessUrlSafe } from './features/submissions/AccessRequestModal';
 import { useDebouncedValue } from './hooks/useDebouncedValue';
 import { Footer } from './layouts/Footer';
 import { Header } from './layouts/Header';
 import { openTableauDashboard } from './services/tableau';
-import type { AccessCatalogResponse, Dashboard, PlatformInfo } from './types/api';
+import type { AccessCatalogItem, AccessCatalogResponse, Dashboard, PlatformInfo } from './types/api';
 import { homepageGreeting } from './utils/greeting';
 
 const INITIAL_FILTERS: FilterState = { platform: null, category: null, market: null, pinnedOnly: false };
+const ALLOWED_ACCESS_REQUEST_HOSTS = ['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com'];
+
+/** Best-effort match of a dashboard to a curated access-catalog entry: exact
+ *  name, then platform+category, then the catch-all "Multiple" platform entry. */
+function findAccessCatalogItem(dashboard: Dashboard, items: AccessCatalogItem[]): AccessCatalogItem | undefined {
+  return (
+    items.find((it) => it.name === dashboard.dashboard_name) ??
+    items.find((it) => it.platform === dashboard.platform && it.category === dashboard.category) ??
+    items.find((it) => it.platform === 'Multiple')
+  );
+}
 
 export default function App() {
   // ---- data ----
@@ -146,6 +157,20 @@ export default function App() {
     return () => ctrl.abort();
   }, []);
 
+  // Per-dashboard "Request Access" link for the tile tooltip, resolved from the
+  // curated access catalog (no per-dashboard API field needed).
+  const accessUrlByDashboard = useMemo(() => {
+    const catalogItems = accessCatalog?.items ?? [];
+    const map = new Map<string, string>();
+    for (const d of items) {
+      const match = findAccessCatalogItem(d, catalogItems);
+      if (match && isAccessUrlSafe(match.request_url, ALLOWED_ACCESS_REQUEST_HOSTS)) {
+        map.set(d.dashboard_id, match.request_url);
+      }
+    }
+    return map;
+  }, [items, accessCatalog]);
+
   return (
     <ErrorBoundary>
       <Header
@@ -168,7 +193,6 @@ export default function App() {
             pinned={pinnedDashboards}
             onOpen={onOpenDashboard}
             onUnpin={(d) => toggle(d.dashboard_id)}
-            onViewAll={() => setFilters({ ...INITIAL_FILTERS, pinnedOnly: true })}
           />
         }
       />
@@ -220,6 +244,7 @@ export default function App() {
             isPinned={isPinned}
             onOpen={onOpenDashboard}
             onTogglePin={(d) => toggle(d.dashboard_id)}
+            accessUrlByDashboard={accessUrlByDashboard}
           />
         ))}
       </main>
@@ -230,7 +255,7 @@ export default function App() {
         open={openAccess}
         onClose={() => setOpenAccess(false)}
         items={accessCatalog?.items ?? []}
-        allowedHosts={['forms.office.com', 'urldefense.com', 'forms.cloud.microsoft', 'rm.pfizer.com']}
+        allowedHosts={ALLOWED_ACCESS_REQUEST_HOSTS}
         onError={(m) => show(m, 'error')}
       />
 

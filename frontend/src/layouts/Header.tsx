@@ -27,7 +27,9 @@ export function Header({
       <div className="wrap">
         <nav className="nav" aria-label="Primary">
           <div className="brand">
-            <div className="brand__plate" aria-label="Pfizer">Pfizer</div>
+            <div className="brand__plate" aria-label="Pfizer">
+              <img src="/pfizer-logo.png" alt="Pfizer" className="brand__plate-img" />
+            </div>
             <div className="brand__div" aria-hidden />
             <div className="brand__lockup">
               <div className="brand__name">Tender &amp; Contract Analytics</div>
@@ -64,7 +66,7 @@ export function Header({
               {greeting}
             </h1>
             <p className="hero__lede">
-              Explore Global Tenders &amp; Contracts analytics across platforms and markets.
+              Explore <span className="lede-accent">Global Tenders &amp; Contracts analytics</span> across platforms and markets.
             </p>
           </div>
           {pinnedSlot}

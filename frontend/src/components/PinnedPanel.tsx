@@ -4,10 +4,9 @@ interface Props {
   pinned: Dashboard[];
   onOpen: (d: Dashboard) => void;
   onUnpin: (d: Dashboard) => void;
-  onViewAll: () => void;
 }
 
-export function PinnedPanel({ pinned, onOpen, onUnpin, onViewAll }: Props) {
+export function PinnedPanel({ pinned, onOpen, onUnpin }: Props) {
   return (
     <aside className="favs" aria-label="Pinned dashboards">
       <div className="favs__head">
@@ -15,7 +14,6 @@ export function PinnedPanel({ pinned, onOpen, onUnpin, onViewAll }: Props) {
           <span aria-hidden>★</span>
           Pinned dashboards
         </div>
-        <button className="favs__viewall" onClick={onViewAll}>View all pinned dashboards</button>
       </div>
       {pinned.length === 0 ? (
         <p className="favs__empty"><b>Pin a dashboard</b>&nbsp;— use the star on any card to keep your favourites in reach.</p>

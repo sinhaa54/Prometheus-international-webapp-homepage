@@ -8,9 +8,10 @@ interface Props {
   isPinned: (id: string) => boolean;
   onOpen: (d: Dashboard) => void;
   onTogglePin: (d: Dashboard) => void;
+  accessUrlByDashboard?: Map<string, string>;
 }
 
-export function PlatformSection({ platform, dashboards, isPinned, onOpen, onTogglePin }: Props) {
+export function PlatformSection({ platform, dashboards, isPinned, onOpen, onTogglePin, accessUrlByDashboard }: Props) {
   const [collapsed, setCollapsed] = useState(false);
   const style = platform.accent ? ({ '--accent': platform.accent } as React.CSSProperties) : undefined;
   return (
@@ -41,6 +42,7 @@ export function PlatformSection({ platform, dashboards, isPinned, onOpen, onTogg
                 onOpen={onOpen}
                 onTogglePin={onTogglePin}
                 accentColor={platform.accent ?? undefined}
+                requestAccessUrl={accessUrlByDashboard?.get(d.dashboard_id)}
               />
             </div>
           ))}
