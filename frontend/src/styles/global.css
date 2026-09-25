@@ -123,8 +123,8 @@ h1.hero__title {
 }
 .favs__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
 .favs__label { font-weight: 600; font-size: 14px; letter-spacing: -.01em; color: #fff; display: flex; align-items: center; gap: 8px; }
-.favs__empty { color: #9FACC2; font-size: 13px; line-height: 1.5; min-height: 98px; display: flex; align-items: center; }
-.favs__list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 112px; overflow-y: auto; align-content: start; padding-right: 3px; }
+.favs__empty { color: #9FACC2; font-size: 13px; line-height: 1.5; height: 112px; display: flex; align-items: center; }
+.favs__list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; height: 112px; overflow-y: auto; align-content: start; padding-right: 3px; }
 .fav-chip {
   display: flex; align-items: center; gap: 9px; padding: 7px 8px 7px 9px; border-radius: 11px;
   background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); cursor: pointer;
