@@ -12,7 +12,6 @@ import { useDashboards, useMetadata } from './features/dashboards/useDashboards'
 import { usePinnedDashboards } from './features/favourites/usePinnedDashboards';
 import { AccessRequestModal, isAccessUrlSafe } from './features/submissions/AccessRequestModal';
 import { useDebouncedValue } from './hooks/useDebouncedValue';
-import { Footer } from './layouts/Footer';
 import { Header } from './layouts/Header';
 import { openTableauDashboard } from './services/tableau';
 import type { AccessCatalogItem, AccessCatalogResponse, Dashboard, PlatformInfo } from './types/api';
@@ -135,12 +134,13 @@ export default function App() {
     [items, pinnedIds],
   );
 
-  // Filter bar should not offer the hidden platforms either.
+  // Filter bar should not offer the hidden platforms (or their categories) either.
   const visibleAvailableFilters = useMemo(() => {
     if (!data?.available_filters) return undefined;
     return {
       ...data.available_filters,
       platforms: data.available_filters.platforms.filter((p) => !HIDDEN_PLATFORMS.has(p.name)),
+      categories: data.available_filters.categories.filter((c) => !HIDDEN_PLATFORMS.has(c.value)),
     };
   }, [data?.available_filters]);
 
@@ -248,8 +248,6 @@ export default function App() {
           />
         ))}
       </main>
-
-      <Footer metadata={metadata} />
 
       <AccessRequestModal
         open={openAccess}

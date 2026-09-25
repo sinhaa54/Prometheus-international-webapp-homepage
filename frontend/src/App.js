@@ -13,7 +13,6 @@ import { useDashboards, useMetadata } from './features/dashboards/useDashboards'
 import { usePinnedDashboards } from './features/favourites/usePinnedDashboards';
 import { AccessRequestModal, isAccessUrlSafe } from './features/submissions/AccessRequestModal';
 import { useDebouncedValue } from './hooks/useDebouncedValue';
-import { Footer } from './layouts/Footer';
 import { Header } from './layouts/Header';
 import { openTableauDashboard } from './services/tableau';
 import { homepageGreeting } from './utils/greeting';
@@ -117,13 +116,14 @@ export default function App() {
             .filter((g) => g.dashboards.length > 0);
     }, [visibleItems, platforms]);
     const pinnedDashboards = useMemo(() => items.filter((d) => pinnedIds.includes(d.dashboard_id)), [items, pinnedIds]);
-    // Filter bar should not offer the hidden platforms either.
+    // Filter bar should not offer the hidden platforms (or their categories) either.
     const visibleAvailableFilters = useMemo(() => {
         if (!data?.available_filters)
             return undefined;
         return {
             ...data.available_filters,
             platforms: data.available_filters.platforms.filter((p) => !HIDDEN_PLATFORMS.has(p.name)),
+            categories: data.available_filters.categories.filter((c) => !HIDDEN_PLATFORMS.has(c.value)),
         };
     }, [data?.available_filters]);
     const resetFilters = () => { setFilters(INITIAL_FILTERS); setSearchInput(''); };
@@ -152,5 +152,5 @@ export default function App() {
     }, [items, accessCatalog]);
     return (_jsxs(ErrorBoundary, { children: [_jsx(Header, { onOpenAccess: () => setOpenAccess(true), contactMailto: metadata?.contact_mailto ?? 'mailto:analytics@pfizer.com', feedbackUrl: metadata?.feedback_url ?? '', greeting: greeting, searchSlot: _jsx(SearchBar, { value: searchInput, onChange: setSearchInput, suggestions: sugData?.items ?? [], loading: sugLoading, onSelect: (d) => { setSearchInput(''); onOpenDashboard(d); }, onClear: () => setSearchInput('') }), pinnedSlot: _jsx(PinnedPanel, { pinned: pinnedDashboards, onOpen: onOpenDashboard, onUnpin: (d) => toggle(d.dashboard_id) }) }), _jsxs("main", { id: "main-content", children: [_jsx(FilterBar, { available: visibleAvailableFilters, value: filters, onChange: setFilters, categoryAccent: metadata?.category_accent, categoryOrder: metadata?.category_order }), (filters.platform || filters.category || filters.market || filters.pinnedOnly || search) && (_jsxs("div", { className: "search-banner", role: "status", children: [_jsxs("span", { children: [search ? _jsxs(_Fragment, { children: ["Filtering by ", _jsxs("strong", { children: ["\u201C", search, "\u201D"] }), " \u00B7 "] }) : null, filters.pinnedOnly ? _jsx(_Fragment, { children: "Pinned only \u00B7 " }) : null, data?.total ?? 0, " matching dashboards."] }), _jsx("button", { type: "button", className: "fchip", onClick: resetFilters, children: "Reset filters" })] })), error && (_jsxs("div", { className: "error-banner", role: "alert", children: ["Could not load dashboards: ", error] })), loading && _jsx(LoadingSkeletonGrid, {}), !loading && !error && grouped.length === 0 && (_jsx(EmptyState, { title: "No dashboards to show", message: search || filters.platform || filters.category || filters.market || filters.pinnedOnly
                             ? 'Try a different search or clear your filters.'
-                            : 'The catalogue is empty. Add rows to the source dataset to get started.', actionLabel: search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined, onAction: resetFilters })), !loading && !error && grouped.map((g) => (_jsx(PlatformSection, { platform: g.platform, dashboards: g.dashboards, isPinned: isPinned, onOpen: onOpenDashboard, onTogglePin: (d) => toggle(d.dashboard_id), accessUrlByDashboard: accessUrlByDashboard }, g.platform.name)))] }), _jsx(Footer, { metadata: metadata }), _jsx(AccessRequestModal, { open: openAccess, onClose: () => setOpenAccess(false), items: accessCatalog?.items ?? [], allowedHosts: ALLOWED_ACCESS_REQUEST_HOSTS, onError: (m) => show(m, 'error') }), _jsx(ToastView, { toast: toast })] }));
+                            : 'The catalogue is empty. Add rows to the source dataset to get started.', actionLabel: search || filters.platform || filters.category || filters.market || filters.pinnedOnly ? 'Reset filters' : undefined, onAction: resetFilters })), !loading && !error && grouped.map((g) => (_jsx(PlatformSection, { platform: g.platform, dashboards: g.dashboards, isPinned: isPinned, onOpen: onOpenDashboard, onTogglePin: (d) => toggle(d.dashboard_id), accessUrlByDashboard: accessUrlByDashboard }, g.platform.name)))] }), _jsx(AccessRequestModal, { open: openAccess, onClose: () => setOpenAccess(false), items: accessCatalog?.items ?? [], allowedHosts: ALLOWED_ACCESS_REQUEST_HOSTS, onError: (m) => show(m, 'error') }), _jsx(ToastView, { toast: toast })] }));
 }
