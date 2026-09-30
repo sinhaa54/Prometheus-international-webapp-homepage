@@ -1,7 +1,7 @@
 {
   "source_refreshed_at": "2026-09-23T06:00:00Z",
   "platforms": [
-    { "name": "ELVIS", "label": "ELVIS", "accent": "#0093D0" },
+    { "name": "ELVIS", "label": "ELVIS", "accent": "#0093D0", "blurb": "Market & Regional Users — Kindly refer to the Market Allocation Dashboard" },
     { "name": "T&C Global", "label": "T&C Global", "accent": "#0033A0" },
     { "name": "Market", "label": "Market Specific Solutions", "accent": "#00AEEF" },
     { "name": "Internal", "label": "Internal", "accent": "#6C757D", "blurb": "Internal usage tracking and operations" }
