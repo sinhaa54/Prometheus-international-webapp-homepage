@@ -5,7 +5,9 @@ export function usePinnedDashboards(validIds, store) {
     const impl = useMemo(() => store ?? createLocalPinnedStore(), [store]);
     const [ids, setIds] = useState(() => impl.read().filter((id) => validIds.has(id)));
     // Prune stale IDs whenever the set of valid dashboard IDs changes.
+    // Guard: skip when validIds is empty (API not yet loaded) to avoid wiping localStorage.
     useEffect(() => {
+        if (validIds.size === 0) return;
         const pruned = impl.read().filter((id) => validIds.has(id));
         impl.write(pruned);
         setIds(pruned);
