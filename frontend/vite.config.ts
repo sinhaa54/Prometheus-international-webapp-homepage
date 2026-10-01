@@ -24,6 +24,15 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       sourcemap: false,
       target: 'es2022',
+      rollupOptions: {
+        output: {
+          // Fixed filenames so Dataiku's HTML never needs updating after a rebuild
+          entryFileNames: 'assets/index.js',
+          chunkFileNames: 'assets/[name].js',
+          assetFileNames: (info) =>
+            info.name?.endsWith('.css') ? 'assets/index.css' : 'assets/[name][extname]',
+        },
+      },
     },
     test: {
       globals: true,
